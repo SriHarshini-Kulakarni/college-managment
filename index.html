@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="CollegePro college management dashboard">
+  <title>CollegePro | College Management System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="loginScreen" class="login-screen">
+    <div class="login-card">
+      <div class="brand-mark">🎓</div>
+      <h1>College<span>Pro</span></h1>
+      <p class="muted">Your campus, organized.</p>
+      <div class="auth-tabs">
+        <button class="auth-tab active" data-auth="login">Sign in</button>
+        <button class="auth-tab" data-auth="register">Create account</button>
+      </div>
+      <form id="authForm">
+        <label for="authName" id="nameLabel" class="hidden">Full name</label>
+        <input id="authName" class="hidden" placeholder="Your full name">
+        <label for="authEmail">Email address</label>
+        <input id="authEmail" type="email" placeholder="admin@collegepro.edu" required>
+        <label for="authPassword">Password</label>
+        <input id="authPassword" type="password" placeholder="Enter password" minlength="4" required>
+        <button class="btn primary full" type="submit" id="authSubmit">Sign in</button>
+      </form>
+      <p class="auth-hint">Demo access: admin@collegepro.edu / admin123</p>
+      <p id="authError" class="form-error"></p>
+    </div>
+  </div>
+
+  <div id="app" class="app hidden">
+    <aside class="sidebar" id="sidebar">
+      <div class="brand"><span class="brand-mark small">🎓</span><span>College<span>Pro</span></span></div>
+      <div class="campus-label">CAMPUS MANAGEMENT</div>
+      <nav class="nav-links">
+        <button class="nav-link active" data-page="dashboard"><span>▦</span> Dashboard</button>
+        <button class="nav-link" data-page="students"><span>♙</span> Students</button>
+        <button class="nav-link" data-page="faculty"><span>♟</span> Faculty</button>
+        <button class="nav-link" data-page="courses"><span>▤</span> Courses</button>
+        <button class="nav-link" data-page="departments"><span>▥</span> Departments</button>
+        <button class="nav-link" data-page="attendance"><span>✓</span> Attendance</button>
+        <button class="nav-link" data-page="timetable"><span>◷</span> Timetable</button>
+        <button class="nav-link" data-page="reports"><span>▥</span> Reports</button>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="help-card"><div class="help-icon">✦</div><b>Need a hand?</b><p>Manage your campus with ease.</p></div>
+        <button class="nav-link" id="logoutBtn"><span>↪</span> Sign out</button>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <button class="icon-btn mobile-menu" id="menuBtn" aria-label="Open menu">☰</button>
+        <div><div class="eyebrow">ACADEMIC YEAR 2026–27</div><h2 id="pageTitle">Dashboard</h2></div>
+        <div class="top-actions">
+          <button class="icon-btn" id="themeBtn" title="Toggle dark mode">☾</button>
+          <div class="user-chip"><div class="avatar" id="userAvatar">A</div><div><b id="userName">Administrator</b><small>Campus Admin</small></div></div>
+        </div>
+      </header>
+      <div class="content">
+        <section id="dashboardPage" class="page active">
+          <div class="welcome-row"><div><h1>Good day, <span id="welcomeName">Administrator</span> 👋</h1><p class="muted">Here’s what’s happening across your campus today.</p></div><span class="date-pill" id="todayDate"></span></div>
+          <div class="stats-grid">
+            <article class="stat-card"><div class="stat-top"><span>Total students</span><span class="stat-icon blue">♙</span></div><strong id="statStudents">0</strong><small class="positive">Across all departments</small></article>
+            <article class="stat-card"><div class="stat-top"><span>Faculty members</span><span class="stat-icon purple">♟</span></div><strong id="statFaculty">0</strong><small class="positive">Teaching staff</small></article>
+            <article class="stat-card"><div class="stat-top"><span>Active courses</span><span class="stat-icon orange">▤</span></div><strong id="statCourses">0</strong><small class="positive">This academic year</small></article>
+            <article class="stat-card"><div class="stat-top"><span>Departments</span><span class="stat-icon green">▥</span></div><strong id="statDepartments">0</strong><small class="positive">Academic divisions</small></article>
+          </div>
+          <div class="dashboard-grid">
+            <article class="panel"><div class="panel-heading"><div><h3>Student overview</h3><p class="muted">Enrollment by department</p></div><span class="tag">2026–27</span></div><div id="departmentChart" class="bar-chart"></div></article>
+            <article class="panel"><div class="panel-heading"><div><h3>Today’s attendance</h3><p class="muted">Based on recorded entries</p></div><span class="stat-icon green">✓</span></div><div class="attendance-ring-wrap"><div class="ring" id="attendanceRing"><div><strong id="attendancePercent">0%</strong><small>Present</small></div></div><div class="ring-legend"><p><i class="dot green-dot"></i> Present <b id="presentCount">0</b></p><p><i class="dot red-dot"></i> Absent <b id="absentCount">0</b></p><p><i class="dot yellow-dot"></i> Not marked <b id="unmarkedCount">0</b></p></div></div></article>
+          </div>
+          <article class="panel"><div class="panel-heading"><div><h3>Recent students</h3><p class="muted">Latest enrolled students</p></div><button class="btn light small" data-go="students">View all students →</button></div><div class="table-wrap"><table><thead><tr><th>Student</th><th>Department</th><th>Year</th><th>Status</th></tr></thead><tbody id="recentStudents"></tbody></table></div></article>
+          <article class="panel notice-panel"><div><h3>Campus notice board</h3><p class="muted">Important updates for the campus community.</p></div><div class="notice-list"><div class="notice"><span class="notice-symbol">📌</span><div><b>Semester registration open</b><p>Students can review their course registrations with their department office.</p></div><small>Today</small></div><div class="notice"><span class="notice-symbol">📅</span><div><b>Faculty meeting</b><p>Monthly academic review meeting is scheduled for Friday at 2:00 PM.</p></div><small>2 days ago</small></div></div></article>
+        </section>
+
+        <section id="studentsPage" class="page">
+          <div class="section-intro"><div><h1>Student management</h1><p class="muted">Enroll students and maintain academic profiles.</p></div><button class="btn primary" id="addStudentBtn">＋ Add student</button></div>
+          <div class="toolbar"><input id="studentSearch" class="search" placeholder="⌕  Search by name, email or ID"><select id="studentStatusFilter"><option value="">All statuses</option><option>Active</option><option>Enrolled</option><option>Graduated</option><option>On Leave</option><option>Dropped</option></select><select id="studentDeptFilter"><option value="">All departments</option></select></div>
+          <article class="panel"><div class="table-wrap"><table><thead><tr><th>Student</th><th>Student ID</th><th>Department</th><th>Year</th><th>Status</th><th>Actions</th></tr></thead><tbody id="studentsTable"></tbody></table></div></article>
+        </section>
+
+        <section id="facultyPage" class="page">
+          <div class="section-intro"><div><h1>Faculty management</h1><p class="muted">Manage teaching staff and department assignments.</p></div><button class="btn primary" id="addFacultyBtn">＋ Add faculty</button></div>
+          <div class="toolbar"><input id="facultySearch" class="search" placeholder="⌕  Search faculty by name or email"><select id="facultyDeptFilter"><option value="">All departments</option></select></div>
+          <article class="panel"><div class="table-wrap"><table><thead><tr><th>Faculty member</th><th>Faculty ID</th><th>Department</th><th>Qualification</th><th>Joined</th><th>Actions</th></tr></thead><tbody id="facultyTable"></tbody></table></div></article>
+        </section>
+
+        <section id="coursesPage" class="page">
+          <div class="section-intro"><div><h1>Course management</h1><p class="muted">Create courses and assign faculty members.</p></div><button class="btn primary" id="addCourseBtn">＋ Add course</button></div>
+          <div class="toolbar"><input id="courseSearch" class="search" placeholder="⌕  Search courses"><select id="courseDeptFilter"><option value="">All departments</option></select></div>
+          <div id="courseCards" class="course-grid"></div>
+        </section>
+
+        <section id="departmentsPage" class="page">
+          <div class="section-intro"><div><h1>Departments</h1><p class="muted">Academic divisions and department heads.</p></div><button class="btn primary" id="addDepartmentBtn">＋ Add department</button></div>
+          <div id="departmentCards" class="department-grid"></div>
+        </section>
+
+        <section id="attendancePage" class="page">
+          <div class="section-intro"><div><h1>Attendance tracking</h1><p class="muted">Record daily student attendance.</p></div><button class="btn primary" id="saveAttendanceBtn">Save attendance</button></div>
+          <div class="toolbar"><input type="date" id="attendanceDate"><select id="attendanceDeptFilter"><option value="">All departments</option></select><input id="attendanceSearch" class="search" placeholder="⌕  Search students"></div>
+          <article class="panel"><div class="table-wrap"><table><thead><tr><th>Student</th><th>Department</th><th>Attendance</th></tr></thead><tbody id="attendanceTable"></tbody></table></div></article>
+        </section>
+
+        <section id="timetablePage" class="page">
+          <div class="section-intro"><div><h1>Class timetable</h1><p class="muted">View and manage weekly class schedules.</p></div><button class="btn primary" id="addTimetableBtn">＋ Add class</button></div>
+          <div class="toolbar"><select id="timetableDay"><option value="">All days</option><option>Monday</option><option>Tuesday</option><option>Wednesday</option><option>Thursday</option><option>Friday</option><option>Saturday</option></select><select id="timetableDept"><option value="">All departments</option></select></div>
+          <article class="panel"><div class="table-wrap"><table><thead><tr><th>Day</th><th>Time</th><th>Course</th><th>Faculty</th><th>Room</th><th>Actions</th></tr></thead><tbody id="timetableTable"></tbody></table></div></article>
+        </section>
+
+        <section id="reportsPage" class="page">
+          <div class="section-intro"><div><h1>Reports & analytics</h1><p class="muted">A snapshot of academic activity across the college.</p></div><button class="btn primary" id="exportReportBtn">↓ Export students CSV</button></div>
+          <div class="stats-grid report-stats"><article class="stat-card"><span>Active students</span><strong id="reportActive">0</strong><small>Currently enrolled</small></article><article class="stat-card"><span>Graduated</span><strong id="reportGraduated">0</strong><small>Completed studies</small></article><article class="stat-card"><span>Faculty-to-student</span><strong id="reportRatio">0:0</strong><small>Approximate ratio</small></article><article class="stat-card"><span>Attendance rate</span><strong id="reportAttendance">0%</strong><small>Recorded attendance</small></article></div>
+          <article class="panel"><div class="panel-heading"><div><h3>Department report</h3><p class="muted">Student and faculty distribution</p></div></div><div class="table-wrap"><table><thead><tr><th>Department</th><th>Students</th><th>Faculty</th><th>Courses</th></tr></thead><tbody id="reportTable"></tbody></table></div></article>
+          <article class="panel"><div class="panel-heading"><div><h3>Export data</h3><p class="muted">Download project data for your records.</p></div></div><div class="export-actions"><button class="btn light" id="exportFacultyBtn">Export faculty CSV</button><button class="btn light" id="exportCoursesBtn">Export courses CSV</button><button class="btn light" id="backupBtn">Download full JSON backup</button></div></article>
+        </section>
+      </div>
+      <footer>© 2026 CollegePro · College Management System <span>Built with HTML, CSS & JavaScript</span></footer>
+    </main>
+  </div>
+
+  <div id="modalBackdrop" class="modal-backdrop hidden"><div class="modal"><div class="modal-head"><div><h3 id="modalTitle">Add record</h3><p class="muted" id="modalSubtitle">Enter the details below.</p></div><button class="icon-btn" id="closeModal" aria-label="Close">×</button></div><form id="recordForm"><div id="modalFields" class="form-grid"></div><div class="modal-actions"><button type="button" class="btn light" id="cancelModal">Cancel</button><button type="submit" class="btn primary">Save record</button></div></form></div></div>
+  <div id="toast" class="toast"></div>
+  <script src="script.js"></script>
+</body>
+</html>
